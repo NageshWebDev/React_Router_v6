@@ -51,22 +51,23 @@ const router = createBrowserRouter([
             loader: eventsLoader,
           },
           {
+            path: "new",
+            element: <NewEventPage />,
+            action: newEventAction,
+          },
+          {
+            id: 'eventDetailId',
             path: ":eventId",
-            id: "event-detail",
-            loader: eventDetailLoader, // This loader data is available to childern too
+            // loader: eventDetailLoader, // This loader data is available to childern too
             children: [
               {
                 index: true,
+                loader: eventDetailLoader,
                 element: <EventDetailPage />,
                 action: eventDetailAction,
               },
               { path: "edit", element: <EditEventPage /> },
             ],
-          },
-          {
-            path: "new",
-            element: <NewEventPage />,
-            action: newEventAction,
           },
         ],
       },

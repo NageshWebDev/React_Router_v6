@@ -1,12 +1,10 @@
 import { useLoaderData } from "react-router-dom";
 import EventsList from "../components/EventsList";
+import { customFetch } from "../util/customFetch";
 
 export function EventsPage() {
   const fetchedEvents = useLoaderData();
-  if (!fetchedEvents.success) {
-    return <p>{fetchedEvents.message}</p>;
-  }
-
+  console.log('fetchedEvents : ', fetchedEvents)
   return <EventsList events={fetchedEvents.data.events} />;
 }
 
@@ -22,22 +20,14 @@ export function EventsPage() {
   Downside there is a delay in route transition,
   where it looks to the user as if nothing is happening 
   
-  ! can't use hooks in loader function
- */
-export async function eventsLoader() {
-  const response = await fetch("http://localhost:8080/events");
+  !! can't use hooks in loader function
 
-  if (!response.ok) {
-    throw {
-      success: false,
-      data: {},
-      message: "Could NOT fetch events.",
-    };
-  } else {
-    return {
-      success: true,
-      data: await response.json(),
-      message: "Events are fetched.",
-    };
-  }
+  Data returned by loader is available to the current component.
+  Data returned by loader is NOT available to the parent of current component.
+  Data returned by loader is also available to the childern component.
+  We could use fetched events data from useLoaderData hook, inside EventsList component.
+ */
+export function eventsLoader() {
+  const {customGet}= customFetch()
+  return customGet("http://localhost:8080/events")
 }
