@@ -3,17 +3,15 @@ import classes from "./EventsList.module.css";
 
 function formatDate(date) {
   const options = {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   };
-  
-  return new Date(date).toLocaleDateString('en-US', options);
+
+  return new Date(date).toLocaleDateString("en-US", options);
 }
 
 function EventsList({ events }) {
-
-
   return (
     <div className={classes.events}>
       <h1 className="text-lg font-medium">All Events</h1>
@@ -23,8 +21,12 @@ function EventsList({ events }) {
             <Link to={event.id}>
               <img src={event.image} alt={event.title} />
               <div className={classes.content}>
-                <h2 className="text-lg text-gray-300 font-medium capitalize ">{event.title}</h2>
-                <time className="text-sm">{formatDate(event.date)}</time>
+                <h2 className="text-xl text-gray-300 font-medium capitalize ">
+                  {event.title}
+                </h2>
+                <time className="text-sm font-medium">
+                  {formatDate(event.date)}
+                </time>
               </div>
             </Link>
           </li>

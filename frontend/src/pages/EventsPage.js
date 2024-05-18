@@ -4,7 +4,7 @@ import { customFetch } from "../util/customFetch";
 
 export function EventsPage() {
   const fetchedEvents = useLoaderData();
-  console.log('fetchedEvents : ', fetchedEvents)
+  console.log("fetchedEvents : ", fetchedEvents);
   return <EventsList events={fetchedEvents.data.events} />;
 }
 
@@ -27,7 +27,7 @@ export function EventsPage() {
   Data returned by loader is also available to the childern component.
   We could use fetched events data from useLoaderData hook, inside EventsList component.
  */
-export function eventsLoader() {
-  const {customGet}= customFetch()
-  return customGet("http://localhost:8080/events")
+export async function eventsLoader() {
+  const { customGet } = customFetch();
+  return await customGet("http://localhost:8080/events");
 }

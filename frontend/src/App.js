@@ -13,6 +13,7 @@ import { HomePage } from "./pages/HomePage";
 import { newEventAction, NewEventPage } from "./pages/NewEventPage";
 import { EventRootLayout } from "./pages/EventRootLayout";
 import { Error } from "./pages/Error";
+import { formAction } from "./components/EventForm";
 
 // 1. Add five new (dummy) page components (content can be simple <h1> elements)
 //    - HomePage
@@ -53,20 +54,19 @@ const router = createBrowserRouter([
           {
             path: "new",
             element: <NewEventPage />,
-            action: newEventAction,
+            action: formAction,
           },
           {
-            id: 'eventDetailId',
+            id: "eventDetailId",
             path: ":eventId",
-            // loader: eventDetailLoader, // This loader data is available to childern too
+            loader: eventDetailLoader, // This loader data is available to childern too, remember childern need to use useRouteLoaderData(<id>), where id is "eventDetailId"
             children: [
               {
                 index: true,
-                loader: eventDetailLoader,
                 element: <EventDetailPage />,
                 action: eventDetailAction,
               },
-              { path: "edit", element: <EditEventPage /> },
+              { path: "edit", element: <EditEventPage />, action: formAction },
             ],
           },
         ],
