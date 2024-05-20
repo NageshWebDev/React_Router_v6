@@ -31,7 +31,7 @@ export function customFetch() {
     };
 
     console.log("customResponse : ", customResponse);
-    return customResponse;
+      return customResponse;
   }
 
   const customGet = async (url) => {

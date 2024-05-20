@@ -1,11 +1,38 @@
-import { useLoaderData } from "react-router-dom";
+import { Await, defer, useLoaderData } from "react-router-dom";
 import EventsList from "../components/EventsList";
 import { customFetch } from "../util/customFetch";
+import { Suspense } from "react";
+import { GenericLoading } from "../components/GenericLoading";
 
 export function EventsPage() {
   const fetchedEvents = useLoaderData();
-  console.log("fetchedEvents : ", fetchedEvents);
-  return <EventsList events={fetchedEvents.data.events} />;
+  console.log("fetchedEvents : ", fetchedEvents)
+  // allEvent is an unresolved promise
+  const { allEvent } = fetchedEvents;
+  
+  /*
+  By default route transaction only occour when loader computed.
+  but if we want to show loading state on route transaction (if data isn't available)
+  then we can use combination of 'Suspense' and "Await"
+  */
+
+  return (
+    <Suspense fallback={<GenericLoading />}>
+      <Await resolve={allEvent}>
+      {/* After allEvent get resolved, we pass the resolved data as parameters to the function*/}
+        {(fetchedEvents) => {
+          console.log("Await fetchedEvents : ", fetchedEvents)
+          const {data} = fetchedEvents 
+          const {events} = data 
+          return <EventsList events={events} />}}
+      </Await>
+    </Suspense>
+  );
+}
+
+async function loadEvents() {
+  const { customGet } = customFetch();
+  return customGet("http://localhost:8080/events");
 }
 
 /*
@@ -27,7 +54,15 @@ export function EventsPage() {
   Data returned by loader is also available to the childern component.
   We could use fetched events data from useLoaderData hook, inside EventsList component.
  */
-export async function eventsLoader() {
-  const { customGet } = customFetch();
-  return await customGet("http://localhost:8080/events");
+export function eventsLoader() {
+  console.log('eventsLoader is called')
+  /*
+   The idea behind defer is that we have a value that will eventually resolve 
+   to another value, which is the definition of a promise.
+
+   laodEvents() returns a promise
+   */
+  return defer({
+    allEvent: loadEvents(),
+  });
 }

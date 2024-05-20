@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 import classes from "./MainNavigation.module.css";
+import NewsletterSignup from "./NewsletterSignup";
 
 function MainNavigation() {
-
   /*
   the end prop ensures that link (to) is only treated as active
   if the currently active route ends with 'to' path.
@@ -13,13 +13,39 @@ function MainNavigation() {
       <nav>
         <ul className={classes.list}>
           <li>
-            <NavLink to="/" className={({isActive})=>isActive ? classes.active:undefined} end>Home</NavLink>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+              end
+            >
+              Home
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/events" className={({isActive})=>isActive ? classes.active:undefined} end>Events</NavLink>
+            <NavLink
+              to="/events"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+            >
+              Events
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/newsletter"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+            >
+              Newsletter
+            </NavLink>
           </li>
         </ul>
       </nav>
+      <NewsletterSignup />
     </header>
   );
 }
